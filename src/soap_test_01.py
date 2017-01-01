@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from lxml import etree
 
 NAMESPACE = "http://schemas.xmlsoap.org/soap/envelope/"
