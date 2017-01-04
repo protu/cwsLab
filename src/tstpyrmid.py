@@ -6,7 +6,7 @@ from pyramid.view import view_config
 
 @view_config(route_name='hello', renderer='string')
 def hello_world(request):
-    return 'Hello World\n'
+    return request
 
 
 if __name__ == '__main__':
