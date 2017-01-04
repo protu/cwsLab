@@ -4,6 +4,7 @@ from pyramid.config import Configurator
 from pyramid.view import view_config
 from acs import response
 
+
 @view_config(route_name='hello', renderer='string')
 def hello_world(request):
     rsp = response.tostring()
