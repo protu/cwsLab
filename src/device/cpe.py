@@ -8,19 +8,9 @@ Client for quick tests to the server
 from lxml import etree
 import string
 import random
+from soap.cwmp import NAMESPACE, NSMAP, SOAP, SOAP_ENC, CWMP, XSI, XSD # @UnusedImport
+from soap.cwmp import soap_envelope, soap_header, soap_body
 
-NAMESPACE = "http://schemas.xmlsoap.org/soap/envelope/"
-NSMAP = {'soap': "http://schemas.xmlsoap.org/soap/envelope/",
-         'soap-enc': "http://schemas.xmlsoap.org/soap/encoding/",
-         'cwmp': "urn:dslforum-org:cwmp-1-0",
-         'xsi': "http://www.w3.org/2001/XMLSchema-instance",
-         'xsd': "http://www.w3.org/2001/XMLSchema"}
-
-SOAP = '{%s}' % NAMESPACE
-SOAP_ENC = '{%s]' % NSMAP['soap-enc']
-CWMP = '{%s}' % NSMAP['cwmp']
-XSI = '{%s]' % NSMAP['xsi']
-XSD = '{%s]' % NSMAP['xsd']
 
 def sessionID(length=8):
     
@@ -32,36 +22,6 @@ def sessionID(length=8):
     
     return ''.join([random.choice(string.ascii_letters) for i in range(length)])  # @UnusedVariable
 
-def soap_envelope():
-    
-    """ Create SOAP envelpe and return etree element """
-    
-    return etree.Element(SOAP + 'Envelope', nsmap=NSMAP)
-
-
-def soap_header(text=sessionID()):
-    
-    """  Create SOAP header with ID tag as specified in TR-069
-    
-    Keyword arguments:
-    text - session ID, usualy generated wiht sessionID function
-    """
-    
-    header = etree.Element(SOAP + 'Header')
-    ID = etree.Element(CWMP + 'ID')
-    ID.attrib[SOAP + 'mustUnderstand'] = "1"
-    ID.text = text
-    
-    header.append(ID)
-    
-    return header
-
-
-def soap_body():
-    
-    """ Return SOAP body element """
-    
-    return etree.Element(SOAP+'Body')
 
 def deviceID(oui="06DA41", manufacturer="Device and co.", product_class="IAD X-2", serial_number="06DA4101ABCD"):
     
@@ -97,13 +57,14 @@ def inform(events=['0 BOOTSTRAP', '1 BOOT']):
     cwmp_inform.append(event)
     
     return cwmp_inform
+
         
 def soap_message():
     
     """ Returns sample TR-069 inform message as etree """
     
     message = soap_envelope()
-    message.append(soap_header())
+    message.append(soap_header(sessionID()))
     body = soap_body()
     body.append(inform())
     message.append(body)

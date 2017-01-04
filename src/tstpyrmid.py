@@ -2,12 +2,12 @@
 from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.view import view_config
-
+from acs import response
 
 @view_config(route_name='hello', renderer='string')
 def hello_world(request):
-    return 'Hello World\n'
-
+    rsp = response.tostring()
+    return rsp
 
 if __name__ == '__main__':
     config = Configurator()

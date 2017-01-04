@@ -1,26 +1,24 @@
 # -*- coding: utf-8 -*-
 from lxml import etree
+from soap.cwmp import NAMESPACE, NSMAP, SOAP, SOAP_ENC, CWMP, XSI, XSD # @UnusedImport
+from soap.cwmp import soap_envelope, soap_header, soap_body # @UnusedImport
 
-NAMESPACE = "http://schemas.xmlsoap.org/soap/envelope/"
-NSMAP = {'soap': "http://schemas.xmlsoap.org/soap/envelope/",
-         'soap-enc': "http://schemas.xmlsoap.org/soap/encoding/",
-         'cwmp': "urn:dslforum-org:cwmp-1-0",
-         'xsi': "http://www.w3.org/2001/XMLSchema-instance",
-         'xsd': "http://www.w3.org/2001/XMLSchema"}
+def soap_message():
+    
+    """ Returns sample TR-069 request message as etree """
+    
+    message = soap_envelope()
+    message.append(soap_header("sessionID"))
+    body = soap_body()
+    gpn = etree.SubElement(body, CWMP + "GetParameterNames")
+    etree.SubElement(gpn, "ParameterPath").text = "InternetGatewayDevice.WANDevice."
+    etree.SubElement(gpn, "NextLevel").text = "true"
+    message.append(body)
+    
+    return message
 
-SOAP = '{%s}' % NAMESPACE
-CWMP = '{%s}' % NSMAP['cwmp']
-
-my_soap = etree.Element(SOAP+'Envelope', nsmap=NSMAP)
-header = etree.SubElement(my_soap, SOAP+"Header")
-ID = etree.Element(CWMP+'ID')
-ID.attrib[SOAP+'mustUnderstand'] = "1"
-ID.text = 'bcd6266d'
-header.append(ID)
-body = etree.Element(SOAP+'body')
-my_soap.append(body)
-gpn = etree.SubElement(body, CWMP+"GetParameterNames")
-etree.SubElement(gpn, "ParameterPath").text = "InternetGatewayDevice.WANDevice."
-etree.SubElement(gpn, "NextLevel").text = "true"
-
-print(etree.tostring(my_soap, pretty_print=True))
+def tostring():
+    return etree.tostring(soap_message(), pretty_print=True)
+    
+if __name__ == "__main__":
+    print (tostring())
