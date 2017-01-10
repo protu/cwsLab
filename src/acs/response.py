@@ -6,12 +6,12 @@ from soap.cwmp import soap_envelope, soap_header         # NOQA  @UnusedImport
 from soap.cwmp import soap_body                          # NOQA  @UnusedImport
 
 
-def soap_message():
+def soap_message(sessionID):
 
     """ Returns sample TR-069 request message as etree """
 
     message = soap_envelope()
-    message.append(soap_header("sessionID"))
+    message.append(soap_header(sessionID))
     body = soap_body()
     gpn = etree.SubElement(body, CWMP + "GetParameterNames")
     etree.SubElement(gpn,
@@ -22,8 +22,8 @@ def soap_message():
     return message
 
 
-def tostring():
-    return etree.tostring(soap_message(), pretty_print=True)
+def tostring(ID="sessionID"):
+    return etree.tostring(soap_message(ID), pretty_print=True)
 
 
 if __name__ == "__main__":

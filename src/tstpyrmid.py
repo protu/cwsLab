@@ -3,13 +3,14 @@ from wsgiref.simple_server import make_server
 from pyramid.config import Configurator
 from pyramid.view import view_config
 from acs import response
+from soap.parse import Device
 
 
 @view_config(route_name='cwmp', renderer='string')
 def cwmp(request):
     request.response.content_type = 'text/xml; charset=UTF-8'
-    rsp = response.tostring()
-    print(request)
+    dev = Device(request.body)
+    rsp = response.tostring(ID=dev.cwmpID())
     return rsp
 
 if __name__ == '__main__':
