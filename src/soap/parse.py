@@ -8,25 +8,28 @@ Created on Tue Jan 10 15:16:59 2017
 from lxml import etree
 
 
-class Device:
+class Device(object):
 
     def __init__(self, soapResponse):
 
-        self.soapResponse = soapResponse
+        self.__soapResponse = soapResponse
 
-    def getroot(self):
-        root = etree.fromstring(self.soapResponse)
+    @property
+    def root(self):
+        root = etree.fromstring(self.__soapResponse)
         return root
 
-    def getnamespace(self):
-        root = self.getroot()
+    @property
+    def namespace(self):
+        root = self.root
         return root.nsmap
 
+    @property
     def cwmpID(self):
-        ns = self.getnamespace()
+        ns = self.namespace
         cwmp = '{'+ns['cwmp']+'}'
         head = None
-        for el in self.getroot():
+        for el in self.root:
             if 'Header' in el.tag:
                 head = el
 

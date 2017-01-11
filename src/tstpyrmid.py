@@ -10,7 +10,7 @@ from soap.parse import Device
 def cwmp(request):
     request.response.content_type = 'text/xml; charset=UTF-8'
     dev = Device(request.body)
-    rsp = response.tostring(ID=dev.cwmpID())
+    rsp = response.tostring(ID=dev.cwmpID)
     return rsp
 
 if __name__ == '__main__':
