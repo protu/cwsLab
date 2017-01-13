@@ -96,10 +96,19 @@ class CPEMethods:
 
 class ACSMethods:
 
-    def __init__(self):
-        pass
+    def __init__(self, sessionID="testSession"):
+        self.__sesID = sessionID
 
-    def Infrom(self):
+    def Inform(self):
+
+        message = soap_envelope()
+        message.append(soap_header(self.__sesID))
+        body = soap_body()
+        etree.SubElement(body, CWMP + "Inform")
+        message.append(body)
+        return message
+
+    def InformResponse(self):
         pass
 
     def TransferComplete(self):
