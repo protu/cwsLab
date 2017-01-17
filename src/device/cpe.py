@@ -22,8 +22,8 @@ def sessionID(length=8):
     length - length of the arbitrary string
     """
 
-    return ''.join([random.choice(string.ascii_letters)
-                    for i in range(length)])                   # @UnusedVariable
+    return ''.join([random.SystemRandom().choice(string.ascii_letters)
+                    for _ in range(length)])
 
 
 def deviceID(oui="06DA41", manufacturer="Device and co.",
