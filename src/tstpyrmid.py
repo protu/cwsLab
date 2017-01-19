@@ -23,5 +23,5 @@ if __name__ == '__main__':
     config.add_route('cwmp', '/')
     config.scan()
     app = config.make_wsgi_app()
-    server = make_server('0.0.0.0', 8080, app)
+    server = make_server('0.0.0.0', 10301, app)
     server.serve_forever()

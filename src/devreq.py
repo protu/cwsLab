@@ -2,7 +2,7 @@
 from device import cpe
 import requests
 
-url = 'http://localhost:5000'
+url = 'http://localhost:10301'
 req = requests.Session().post(url, cpe.tostring(), headers={'Content-Type': 'text/xml; charset=ISO-8859-1', 'SOAPAction': ''})
 for key in req.headers:
     print(key + ': ' + req.headers[key])
