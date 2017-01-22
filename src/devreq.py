@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from device import cpe
 import requests
+from device import cpe
 
-url = 'http://localhost:10301'
-req = requests.Session().post(url, cpe.tostring(), headers={'Content-Type': 'text/xml; charset=ISO-8859-1', 'SOAPAction': ''})
+
+acsurl = 'http://localhost:10301'
+req = requests.Session().post(acsurl, cpe.tostring(), headers={'Content-Type': 'text/xml; charset=ISO-8859-1', 'SOAPAction': ''})
 for key in req.headers:
     print(key + ': ' + req.headers[key])
 print(req.text)
