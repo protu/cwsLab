@@ -16,6 +16,7 @@ _app.secret_key = cpe.sessionID(32)
 
 
 @_app.route('/', methods=['GET', 'POST'])
+@_app.route('/acs/croatia/ULL', methods=['POST'])
 def cwmp():
     """ Return response to Device
     and set session cookie
