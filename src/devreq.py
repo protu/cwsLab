@@ -14,12 +14,12 @@ def send_request():
     Send connection request to ACS server
     """
     tr_session = requests.Session()
+    dev_request = tr_session.post(ACSURL)
+    print_request(dev_request)
     dev_request = tr_session.post(ACSURL, cpe.tostring(),
                                   headers={'Content-Type': 'text/xml; charset=ISO-8859-1',
                                            'SOAPAction': ''})
     print_request(dev_request)
-    # dev_request = tr_session.post(ACSURL)
-    # print_request(dev_request)
     tr_session.close()
     dev_request.close()
 

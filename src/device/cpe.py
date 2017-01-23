@@ -3,10 +3,10 @@
 Client for quick tests to the server
 
 '''
-
-from lxml import etree
+# pylint: disable=unused-import
 import string
 import random
+from lxml import etree
 from soap.cwmp import NAMESPACE, NSMAP, SOAP, SOAP_ENC   # NOQA  @UnusedImport
 from soap.cwmp import CWMP, XSI, XSD                     # NOQA  @UnusedImport
 from soap.cwmp import soap_envelope, soap_header         # NOQA  @UnusedImport

@@ -23,7 +23,11 @@ def soap_message(sessionID):
 
 
 def tostring(ID="sessionID"):
-    return etree.tostring(soap_message(ID), pretty_print=True)
+    try:
+        output = etree.tostring(soap_message(ID), pretty_print=True)
+    except():
+        output = "No input xml message"
+    return output
 
 
 if __name__ == "__main__":
