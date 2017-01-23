@@ -9,18 +9,19 @@ from soap.cwmp import soap_body                          # NOQA  @UnusedImport
 def soap_message(sessionID):
 
     """ Returns sample TR-069 request message as etree """
+    try:
+        message = soap_envelope()
+        message.append(soap_header(sessionID))
+        body = soap_body()
+        gpn = etree.SubElement(body, CWMP + "GetParameterNames")
+        etree.SubElement(gpn,
+                        "ParameterPath").text = "InternetGatewayDevice.WANDevice."
+        etree.SubElement(gpn, "NextLevel").text = "true"
+        message.append(body)
 
-    message = soap_envelope()
-    message.append(soap_header(sessionID))
-    body = soap_body()
-    gpn = etree.SubElement(body, CWMP + "GetParameterNames")
-    etree.SubElement(gpn,
-                     "ParameterPath").text = "InternetGatewayDevice.WANDevice."
-    etree.SubElement(gpn, "NextLevel").text = "true"
-    message.append(body)
-
-    return message
-
+        return message
+    except():
+        return None
 
 def tostring(ID="sessionID"):
     try:

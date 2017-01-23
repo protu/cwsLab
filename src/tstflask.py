@@ -10,22 +10,28 @@ from acs import response as acs_response
 from soap.parse import Device
 from device import cpe
 
-_app = Flask(__name__)
-_app.config["SECRET_KEY"] = cpe.sessionID(32)
-_app.secret_key = cpe.sessionID(32)
+app = Flask(__name__)
+app.config["SECRET_KEY"] = cpe.sessionID(32)
+app.secret_key = cpe.sessionID(32)
 
 
-@_app.route('/', methods=['GET', 'POST'])
-@_app.route('/acs/croatia/ULL', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/acs/croatia/ULL', methods=['POST'])
 def cwmp():
     """ Return response to Device
     and set session cookie
     """
-    dev = Device(request.data)
-    rsp = acs_response.tostring(ID=dev.cwmpID)
-    session['sessionID'] = dev.cwmpID
-    return Response(rsp, mimetype="text/xml")
+    if request.method == 'GET':
+        return "Go away, you don't exist\n"
+
+    if request.headers.has_key('Soapaction') is True:
+        dev = Device(request.data)
+        rsp = acs_response.tostring(ID=dev.cwmp_id)
+        session['sessionID'] = dev.cwmp_id
+        return Response(rsp, mimetype="text/xml")
+    else:
+        return Response(request.data)
 
 
 if __name__ == '__main__':
-    _app.run(port=10301)
+    app.run(port=10301)

@@ -22,8 +22,11 @@ class Device(object):
         """
         Return root of the xml response
         """
-        root = etree.fromstring(self.__soapResponse)
-        return root
+        try:
+            root = etree.fromstring(self.__soapResponse)
+            return root
+        except():
+            return None
 
     @property
     def namespace(self):
@@ -31,22 +34,25 @@ class Device(object):
         Return namespace of the xml response
         """
         root = self.root
-        return root.nsmap
+        if root is not None:
+            return root.nsmap
+        else:
+            return None
 
     @property
-    def cwmpID(self):
+    def cwmp_id(self):
         """
         Parse and return soap session id
         """
         try:
-            ns = self.namespace
-            cwmp = '{'+ns['cwmp']+'}'
+            nms = self.namespace
+            cwmp = '{'+nms['cwmp']+'}'
             head = None
-            for el in self.root:
-                if 'Header' in el.tag:
-                    head = el
+            for elem in self.root:
+                if 'Header' in elem.tag:
+                    head = elem
 
-            ID = head.find(cwmp+'ID')
-            return ID.text
+            sess_id = head.find(cwmp+'ID')
+            return sess_id.text
         except():
             return "noSessionID"
