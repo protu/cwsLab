@@ -24,7 +24,10 @@ def cwmp():
     if request.method == 'GET':
         return "Go away, you don't exist\n"
 
-    if request.headers.has_key('Soapaction') is True:
+    if 'Transfer-Encoding' in request.headers:
+        if request._headers['Transfer-Encoding'] == 'chunked':
+            return Response(request.data)
+    elif 'Soapaction' in request.headers:
         dev = Device(request.data)
         rsp = acs_response.tostring(ID=dev.cwmp_id)
         session['sessionID'] = dev.cwmp_id
